@@ -25,11 +25,15 @@ class PlayerAgent:
         return None
     
     def evaluation (self, board_state: board.Board):
-        return None
-
+        score = 0
+        player_eggs_laid = board_state.chicken_player.get_eggs_laid()
+        enemy_eggs_laid = board_state.chicken_enemy.get_eggs_laid()
+        score = player_eggs_laid - enemy_eggs_laid
+        return score
+        
     def minimax(self, board_state: board.Board, depth, is_maximizing_player):
         if self.board_state_is_terminating_state(board_state):
-            return self.evaluation(board_state)
+            return -np.inf if is_maximizing_player else np.inf
         elif depth == 3:
             return self.evaluation(board_state)
         
