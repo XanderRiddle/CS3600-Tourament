@@ -19,10 +19,16 @@ class PlayerAgent:
         pass
 
     def apply_move(self, board_state: board.Board, move):
-        return None
+            direction, move_type = move
+            new_state = board_state.forecast_move(direction, move_type)
+            return new_state
 
     def board_state_is_terminating_state(self, board_state: board.Board):
-        return None
+        if board_state.is_game_over():
+            return True
+        if not board_state.get_valid_moves():
+            return True
+        return False
     
     def evaluation (self, board_state: board.Board):
         score = 0
@@ -31,10 +37,10 @@ class PlayerAgent:
         score = player_eggs_laid - enemy_eggs_laid
         return score
         
-    def minimax(self, board_state: board.Board, depth, is_maximizing_player):
+    def minimax(self, board_state: board.Board, depth, is_maximizing_player, MAX_DEPTH = 3):
         if self.board_state_is_terminating_state(board_state):
-            return -np.inf if is_maximizing_player else np.inf
-        elif depth == 3:
+            return np.inf if is_maximizing_player else -np.inf
+        elif depth == self.MAX_DEPTH:
             return self.evaluation(board_state)
         
         moves = board_state.get_valid_moves()
@@ -66,8 +72,15 @@ class PlayerAgent:
         print(f"Trapdoor B: heard? {sensor_data[1][0]}, felt? {sensor_data[1][1]}")
         print(f"Starting to think with {time_left()} seconds left.")
         moves = board.get_valid_moves()
-        self.minimax()
-        result = moves[np.random.randint(len(moves))]
+        for move in moves:
+            new_state = self.apply_move(board, move)
+            value = self.minimax(new_state, depth=1, is_maximizing_player=False)
+
+            if value > best_value:
+                best_value = value
+                best_move = move
+        
+        result = best_move
         print(f"I have {time_left()} seconds left. Playing {result}.")
         return result
        
