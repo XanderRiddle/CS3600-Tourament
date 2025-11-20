@@ -18,6 +18,38 @@ class PlayerAgent:
     def __init__(self, board: board.Board, time_left: Callable):
         pass
 
+    def apply_move(self, board_state: board.Board, move):
+        return None
+
+    def board_state_is_terminating_state(self, board_state: board.Board):
+        return None
+    
+    def evaluation (self, board_state: board.Board):
+        return None
+
+    def minimax(self, board_state: board.Board, depth, is_maximizing_player):
+        if self.board_state_is_terminating_state(board_state):
+            return self.evaluation(board_state)
+        elif depth == 3:
+            return self.evaluation(board_state)
+        
+        moves = board_state.get_valid_moves()
+        if is_maximizing_player:
+            best_value = -np.inf
+            for move in moves:
+                new_state = self.apply_move(board_state, move)
+                value = self.minimax(new_state, depth + 1, False)
+                best_value = max(best_value, value)
+            return best_value
+    
+        else:
+            best_value = np.inf
+            for move in moves:
+                new_state = self.apply_move(board_state, move)
+                value = self.minimax(new_state, depth + 1, True)
+                best_value = min(best_value, value)
+            return best_value
+
     def play(
         self,
         board: board.Board,
@@ -30,34 +62,9 @@ class PlayerAgent:
         print(f"Trapdoor B: heard? {sensor_data[1][0]}, felt? {sensor_data[1][1]}")
         print(f"Starting to think with {time_left()} seconds left.")
         moves = board.get_valid_moves()
-        minimax()
+        self.minimax()
         result = moves[np.random.randint(len(moves))]
         print(f"I have {time_left()} seconds left. Playing {result}.")
         return result
-    
-    def minimax():
-        moves = board.get_valid_moves()
-        if move_terminates_game():
-            return best_move
-        elif number_of_recursions == 3:
-            return best_move
-        
-        if maximizing_player:
-        best_value = -infinity
-        for move in moves:
-            new_state = apply_move(move)
-            value = minimax(new_state, depth + 1, False)
-            best_value = max(best_value, value)
-        return best_value
-    
-        else:
-        best_value = +infinity
-        for move in get_moves(state):
-            new_state = apply_move(state, move)
-            value = minimax(new_state, depth + 1, True)
-            best_value = min(best_value, value)
-        return best_value
-    
-    def apply_move(move):
        
 
