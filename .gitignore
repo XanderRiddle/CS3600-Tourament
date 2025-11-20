@@ -1,8 +1,8 @@
 venv/
-engine/__pychache__
+engine/__pycache__
 .vscode
-engine/game/__pychache__
-3600-agents/Jeffery/__pychache__
-3600-agents/Yolanda/__pychache__
-3600-agents/Bob(heuristic)/__pychache__
+engine/game/__pycache__
+3600-agents/Jeffery/__pycache__
+3600-agents/Yolanda/__pycache__
+3600-agents/Bob(heuristic)/__pycache__
 3600-agents/matches
