@@ -1,3 +1,5 @@
 venv/
 engine/__pychache__
 .vscode
+engine/game/__pychache__
+3600-agents/Jeffery/__pychache__
